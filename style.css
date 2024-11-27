@@ -1,0 +1,20 @@
+table, th, tr, td {
+    border-collapse: collapse;
+    border: 1px solid black;
+}
+
+.colored-column {
+    background-color: blue;
+}
+
+th:nth-child(2) {
+    background-color: blue;
+}
+
+th:first-child, th:last-child {
+    background-color: #fff;
+}
+
+.error {
+    color: red;
+}
