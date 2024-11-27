@@ -40,6 +40,38 @@ createHTMLElementWithParentId('tbody', 'gtbody', 'gtable');
 
 renderTable(groteszk);
 
+const form = document.getElementById('form')
+form.addEventListener('submit', function(e){
+    e.preventDefault();
+    const szarmazas = document.getElementById('szarmazas');
+    const szerzo1 = document.getElementById('szerzo1');
+    const szerzo1mu = document.getElementById('szerzo1mu');
+    const szerzo2 = document.getElementById('szerzo2');
+    const szerzo2mu = document.getElementById('szerzo2mu');
+
+    const szarmazasvalue = szarmazas.value;
+    const szerzo1value = szerzo1.value;
+    const szerzo1muvalue = szerzo1mu.value;
+    let szerzo2value = szerzo2.value;
+    let szerzo2muvalue = szerzo2mu.value;
+
+    if(szerzo2value === '' && szerzo2muvalue === '') {
+        szerzo2value = undefined;
+        szerzo2muvalue = undefined;
+    }
+
+    groteszk.push({
+        szarmazas: szarmazasvalue,
+        szerzo1: szerzo1value,
+        szerzo1mu: szerzo1muvalue,
+        szerzo2: szerzo2value,
+        szerzo2mu: szerzo2muvalue,
+    })
+
+    form.reset();
+    renderTable(groteszk);
+})
+
 function createTableCell(tagName, innerHTML, parent) {
     const cell = document.createElement(tagName);
     cell.innerHTML = innerHTML;
