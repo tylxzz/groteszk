@@ -40,6 +40,8 @@ createHTMLElementWithParentId('tbody', 'gtbody', 'gtable');
 
 renderTable(groteszk);
 
+generateForm();
+
 const form = document.getElementById('form')
 form.addEventListener('submit', function(e){
     e.preventDefault();
@@ -60,16 +62,18 @@ form.addEventListener('submit', function(e){
         szerzo2muvalue = undefined;
     }
 
-    groteszk.push({
-        szarmazas: szarmazasvalue,
-        szerzo1: szerzo1value,
-        szerzo1mu: szerzo1muvalue,
-        szerzo2: szerzo2value,
-        szerzo2mu: szerzo2muvalue,
-    })
-
-    form.reset();
-    renderTable(groteszk);
+    if(validateFields(szarmazas, szerzo1, szerzo1mu, szerzo2, szerzo2mu)) {
+        const newGroteszk = {
+            szarmazas: szarmazasvalue,
+            szerzo1: szerzo1value,
+            szerzo1mu: szerzo1muvalue,
+            szerzo2: szerzo2value,
+            szerzo2mu: szerzo2muvalue,
+        };
+        groteszk.push(newGroteszk);
+        form.reset();
+        renderTable(groteszk);
+    }
 })
 
 function createTableCell(tagName, innerHTML, parent) {
@@ -137,5 +141,85 @@ function renderTable(groteszk) {
             row1.appendChild(td4);
             row1.appendChild(td5);
         }
+    }
+}
+
+function generateForm() {
+    const form = document.createElement('form');
+    form.id = 'form';
+    document.body.appendChild(form);
+
+    const formValues = [
+        {id: 'szarmazas', label: 'Származás:'},
+        {id: 'szerzo1', label: '1. szerző:'},
+        {id: 'szerzo1mu', label: '1. szerző műve:'},
+        {id: 'szerzo2', label: '2. szerző:'},
+        {id: 'szerzo2mu', label: '2. szerző műve:'}
+    ];
+
+    for(const field of formValues) {
+        const div = document.createElement('div');
+        const label = document.createElement('label');
+        label.htmlFor = field.id;
+        label.textContent = field.label;
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.id = field.id;
+        input.name = field.id;
+
+        const error = document.createElement('div');
+        error.className = 'error';
+
+        const br1 = document.createElement('br');
+        const br2 = document.createElement('br');
+        const br3 = document.createElement('br');
+
+        div.appendChild(label);
+        div.appendChild(br1);
+        div.appendChild(input);
+        div.appendChild(br2);
+        div.appendChild(error);
+        div.appendChild(br3);
+        form.appendChild(div);
+    }
+
+    const button = document.createElement('button');
+    button.type = 'submit';
+    button.textContent = 'Hozzáadás';
+    form.appendChild(button);
+}
+
+function validateFields(szarmazas, szerzo1, szerzo1mu, szerzo2, szerzo2mu) {
+    let valid = true;
+    const errorMessages = form.querySelectorAll('.error');
+    for(const error of errorMessages) {
+        error.innerHTML = "";
+    }
+
+    valid = validateElement(szarmazas, 'Kötelező megadni a szerző(k) származását!');
+    valid = validateElement(szerzo1, 'Kötelező megadni a szerző nevét!');
+    valid = validateElement(szerzo1mu, 'Kötelező megadni a szerző művét!');
+
+    if(szerzo2mu.value != '') {
+        valid = validateElement(szerzo2, 'Add meg a második szerő nevét!');
+    }
+
+    if(szerzo2.value != '') {
+        valid = validateElement(szerzo2mu, 'Add meg a második szerő művének címét!');
+    }
+
+    return valid;
+}
+
+function validateElement(element, errorMessages) {
+    const error = element.parentElement.querySelector('.error');
+    if(element.value === '') {
+        error.innerHTML = errorMessages;
+        return false;
+    }
+    else {
+        error.innerHTML = "";
+        return true;
     }
 }
