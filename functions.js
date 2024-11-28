@@ -158,16 +158,16 @@ function validateFields(szarmazas, szerzo1, szerzo1mu, szerzo2, szerzo2mu) {
         error.innerHTML = "";
     }
 
-    valid = validateElement(szarmazas, 'Kötelező megadni a szerző(k) származását!');
-    valid = validateElement(szerzo1, 'Kötelező megadni a szerző nevét!');
-    valid = validateElement(szerzo1mu, 'Kötelező megadni a szerző művét!');
+    valid = validateElement(szarmazas, 'Kötelező megadni a szerző(k) származását!') && valid;
+    valid = validateElement(szerzo1, 'Kötelező megadni a szerző nevét!') && valid;
+    valid = validateElement(szerzo1mu, 'Kötelező megadni a szerző művét!') && valid;
 
     if(szerzo2mu.value != '') {
-        valid = validateElement(szerzo2, 'Add meg a második szerő nevét!');
+        valid = validateElement(szerzo2, 'Add meg a második szerő nevét!') && valid;
     }
 
     if(szerzo2.value != '') {
-        valid = validateElement(szerzo2mu, 'Add meg a második szerő művének címét!');
+        valid = validateElement(szerzo2mu, 'Add meg a második szerő művének címét!') && valid;
     }
 
     return valid;
